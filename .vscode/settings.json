@@ -1,0 +1,9 @@
+{
+  "cSpell.words": ["Deletar", "gtag", "historicos", "Patrimônio", "Registro"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

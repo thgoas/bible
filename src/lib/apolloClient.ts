@@ -1,12 +1,17 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
 import { setContext } from '@apollo/client/link/context'
 // import Router from 'next/router'
 import { parseCookies } from 'nookies'
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
   uri: 'http://localhost:4000/graphql'
   //uri: process.env.NEXT_PUBLIC_APOLLO_CLIENT_URI
 })
+// const httpLink = createHttpLink({
+//   uri: 'http://localhost:4000/graphql'
+//   //uri: process.env.NEXT_PUBLIC_APOLLO_CLIENT_URI
+// })
 
 let token = ''
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

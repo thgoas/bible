@@ -11,9 +11,7 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Alert,
-  AlertIcon,
-  CloseButton
+  useToast
 } from '@chakra-ui/react'
 import { GetServerSideProps, NextPage } from 'next'
 import { useForm } from 'react-hook-form'
@@ -22,17 +20,18 @@ import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 import client, { accessToken } from '../lib/apolloClient'
 import { gql } from '@apollo/client'
-import LayoutProtected from '../components/LayoutProtected'
+import LayoutAuthenticating from '../components/LayoutAuthenticating'
 
 const Login: NextPage = () => {
+  const toast = useToast()
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm()
 
-  const { signIn, user, loginError } = useAuth()
-  const [error, setError] = useState(null)
+  const { signIn, user, errorLogin, resetLogin } = useAuth()
   const [loading, setLoading] = useState(false)
 
   const onSubmit = async (data) => {
@@ -40,19 +39,34 @@ const Login: NextPage = () => {
     await signIn(data)
   }
   useEffect(() => {
-    if (loginError?.toString() === 'Error: Usuário ou senha inválido') {
-      setError('Usuário ou senha inválido!')
+    console.log(errorLogin)
+    if (errorLogin) {
+      // setError(errorLogin?.toString().substring(7))
+      toast({
+        title: 'Login Error.',
+        description: errorLogin?.toString().substring(7),
+        status: 'warning',
+        duration: 5000,
+        isClosable: true
+      })
     }
     setLoading(false)
+    setValue('email', '')
+    setValue('password', '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loginError])
+  }, [errorLogin])
 
   useEffect(() => {
     user?.id && setLoading(false)
   }, [user])
 
+  useEffect(() => {
+    resetLogin()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-    <LayoutProtected>
+    <LayoutAuthenticating>
       <Flex
         minH={'100vh'}
         align={'center'}
@@ -69,18 +83,7 @@ const Login: NextPage = () => {
               <Link color={'blue.400'}>interessantes</Link> ✌️
             </Text>
           </Stack>
-          {error && (
-            <Alert status="error">
-              <AlertIcon />
-              {error}
-              <CloseButton
-                onClick={() => setError(null)}
-                position="absolute"
-                right="8px"
-                top="8px"
-              />
-            </Alert>
-          )}
+
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
@@ -158,7 +161,7 @@ const Login: NextPage = () => {
           </Box>
         </Stack>
       </Flex>
-    </LayoutProtected>
+    </LayoutAuthenticating>
   )
 }
 export default Login

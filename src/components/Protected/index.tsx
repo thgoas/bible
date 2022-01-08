@@ -1,6 +1,6 @@
 // import Image from 'next/image'
 import Head from 'next/head'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 // import loadingImg from '../../../public/loading.gif'
 import useAuth from '../../hooks/useAuth'
 import { Box, Flex } from '@chakra-ui/layout'
@@ -8,6 +8,7 @@ import { Spinner } from '@chakra-ui/react'
 
 const Protected: React.FC = (props) => {
   const { user, loading } = useAuth()
+  const router = useRouter()
 
   function renderContent() {
     return (
@@ -46,34 +47,28 @@ const Protected: React.FC = (props) => {
       </Flex>
     )
   }
+
+  const isRouter = router.asPath.substring(1)
+
   if (user && !loading) {
-    // console.log('aqui', user, loading)
-    const isRouter = Router.asPath.substring(1)
     const isUser = user.profiles.map((p) => p.name)
+    // console.log('aqui', user, loading)
 
-    if (isRouter === 'comercial') {
-      // console.log('dentro do 1 if')
-      // console.log(isUser)
-      const admin = isUser.includes('admin')
-      const commercial = isUser.includes('commercial')
-
-      if (admin || commercial) {
-        return renderContent()
-      } else {
-        Router.push('/')
-      }
+    if (isRouter === 'user_config' && user.id) {
+      return renderContent()
+    } else {
+      router.push('/')
     }
-
     if (user.id) {
       return renderContent()
     } else {
-      Router.push('/devotional/terms')
+      router.push('/devotional/terms')
     }
 
     if (!isUser.includes(isRouter)) {
       // console.log('dentro do 2 if')
 
-      Router.push('/')
+      router.push('/')
     } else {
       return renderContent()
     }
@@ -83,9 +78,16 @@ const Protected: React.FC = (props) => {
     // console.log('loading')
 
     return renderLoading()
-  } else {
+  } else if (isRouter === 'devotional') {
     // console.log('else')
-    Router.push('/devotional/terms')
+    router.push('/devotional/terms')
+    return null
+  } else if (isRouter === 'user_config') {
+    // console.log('else')
+    router.push('/')
+    return null
+  } else {
+    router.push('/')
     return null
   }
 }

@@ -18,7 +18,14 @@ import {
   DrawerBody,
   DrawerHeader,
   DrawerCloseButton,
-  Image
+  Image,
+  Avatar,
+  Center,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList
 } from '@chakra-ui/react'
 import {
   HamburgerIcon,
@@ -31,6 +38,7 @@ import {
 import NextLink from 'next/link'
 import { NextPage } from 'next'
 import useAuth from '../../hooks/useAuth'
+// import useAuth from '../../hooks/useAuth'
 
 interface WithSubNavigationProps {
   user: any
@@ -91,9 +99,9 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
           <Image
             borderRadius="full"
             boxSize="35px"
-            src="http://localhost:3000/cross.png"
+            src="http://localhost:3000/logo.svg"
             alt="Logo"
-            color={'blue'}
+            bg={useColorModeValue('none', 'white')}
           />
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -110,30 +118,44 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
           <Button variant="ghost" onClick={toggleColorMode}>
             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
           </Button>
-          {/* {props.user?.id ? (
+          {props.user?.id ? (
             <>
-              <Box
-                display={'flex'}
-                flexDir={'column'}
-                h="40px"
-                w="150px"
-                alignItems={'center'}
-                justifyContent={'center'}
-              >
-                <Text fontSize={'sm'} as="b">
-                  Olá
-                </Text>
-                <Text fontSize={'sm'}>{name[0]}</Text>
-              </Box>
-              <Button
-                as={'a'}
-                fontSize={'sm'}
-                fontWeight={400}
-                variant={'link'}
-                onClick={signOut}
-              >
-                Sair
-              </Button>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={'full'}
+                  variant={'link'}
+                  cursor={'pointer'}
+                  minW={0}
+                >
+                  <Avatar
+                    size={'sm'}
+                    src={props.user?.url ? props.user?.url : null}
+                    name={props.user?.name}
+                  />
+                </MenuButton>
+                <MenuList alignItems={'center'}>
+                  <br />
+                  <Center>
+                    <Avatar
+                      size={'2xl'}
+                      src={props.user?.url ? props.user?.url : null}
+                      name={props.user?.name}
+                    />
+                  </Center>
+                  <br />
+                  <Center>
+                    <p>{name[0]}</p>
+                  </Center>
+                  <br />
+                  <MenuDivider />
+                  {/* <MenuItem>Your Servers</MenuItem> */}
+                  <NextLink href={'/user_config'}>
+                    <MenuItem>Configurações</MenuItem>
+                  </NextLink>
+                  <MenuItem onClick={signOut}>Sair</MenuItem>
+                </MenuList>
+              </Menu>
             </>
           ) : (
             <>
@@ -166,9 +188,9 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
                 >
                   Cadastre-se
                 </Button>
-              </NextLink> */}
-          {/* </>
-          )} */}
+              </NextLink>
+            </>
+          )}
         </Stack>
       </Flex>
 

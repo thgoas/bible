@@ -75,7 +75,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     version_id = Number(id)
   }
 
-  console.log('context', context)
   const { data: dataVerse } = await client.query({
     query: gql`
       query verseOfTheDay($version_id: Int) {

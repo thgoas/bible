@@ -13,10 +13,7 @@ import {
   Text,
   useColorModeValue,
   Link,
-  Alert,
-  AlertIcon,
-  CloseButton,
-  useDisclosure
+  useToast
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
@@ -24,10 +21,9 @@ import { GetServerSideProps, NextPage } from 'next'
 import NextLink from 'next/link'
 import { useForm } from 'react-hook-form'
 import { gql, useMutation } from '@apollo/client'
-import CreateAccountModal from '../components/CreateAccountModal'
-import useAuth from '../hooks/useAuth'
 import client, { accessToken } from '../lib/apolloClient'
-import LayoutProtected from '../components/LayoutProtected'
+import LayoutAuthenticating from '../components/LayoutAuthenticating'
+import { useRouter } from 'next/router'
 
 const REGISTER_USER = gql`
   mutation registerUser($name: String!, $email: String!, $password: String!) {
@@ -45,7 +41,7 @@ const REGISTER_USER = gql`
 `
 
 const SigNup: NextPage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const {
     handleSubmit,
@@ -54,10 +50,9 @@ const SigNup: NextPage = () => {
     formState: { errors }
   } = useForm()
 
-  const [error, setError] = useState(null)
+  const toast = useToast()
 
-  const [registerUser, { data, loading }] = useMutation(REGISTER_USER)
-  const { user } = useAuth()
+  const [registerUser, { data, loading, reset }] = useMutation(REGISTER_USER)
 
   const onSubmit = async (value) => {
     try {
@@ -68,17 +63,20 @@ const SigNup: NextPage = () => {
           password: value.password
         }
       })
-    } catch (error) {
-      if (error.toString() === 'Error: EmailError: Email já cadastrado!') {
-        setError('Email já Cadastrado!')
-        handleClearFields()
+    } catch (err) {
+      if (err) {
+        toast({
+          title: 'Error Cadastro.',
+          description: err?.toString().substring(19),
+          status: 'warning',
+          duration: 5000,
+          isClosable: true
+        })
       }
-      console.log(error.toString())
+      console.log(err)
+      reset()
     } finally {
       handleClearFields()
-      if (data) {
-        onOpen()
-      }
     }
   }
 
@@ -90,15 +88,18 @@ const SigNup: NextPage = () => {
   }
 
   useEffect(() => {
-    if (user?.id) {
-      onOpen()
+    console.log(data)
+    if (data?.registerUser.name) {
+      router.push(
+        `/registered_successfully/${data.registerUser.name}/${data.registerUser.email}`
+      )
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, data])
+  }, [data])
 
   return (
-    <LayoutProtected>
-      <CreateAccountModal isOpen={isOpen} onClose={onClose} data={data} />
+    <LayoutAuthenticating>
       <Flex
         minH={'100vh'}
         align={'center'}
@@ -108,28 +109,17 @@ const SigNup: NextPage = () => {
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
             <Heading
-              fontFamily={'Roboto'}
+              fontFamily={'roboto'}
               fontSize={'4xl'}
               textAlign={'center'}
             >
               Cadastre-se
             </Heading>
-            <Text fontFamily={'Roboto'} fontSize={'lg'} color={'gray.600'}>
+            <Text fontFamily={'roboto'} fontSize={'lg'} color={'gray.600'}>
               e aproveite todos os nossos recursos interessantes ✌️
             </Text>
           </Stack>
-          {error && (
-            <Alert status="error">
-              <AlertIcon />
-              {error}
-              <CloseButton
-                onClick={() => setError(null)}
-                position="absolute"
-                right="8px"
-                top="8px"
-              />
-            </Alert>
-          )}
+
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
@@ -243,7 +233,7 @@ const SigNup: NextPage = () => {
           </Box>
         </Stack>
       </Flex>
-    </LayoutProtected>
+    </LayoutAuthenticating>
   )
 }
 

@@ -26,7 +26,7 @@ import { useForm } from 'react-hook-form'
 import ContentBible from '../../components/ContentBible'
 import DialogDevotional from '../../components/DialogDevotional'
 
-import Layout from '../../components/Layout'
+import LayoutAuthenticated from '../../components/LayoutAuthenticated'
 import useBible from '../../hooks/useBible'
 
 const DoDevotional: NextPage = () => {
@@ -452,7 +452,7 @@ const DoDevotional: NextPage = () => {
     return null
   }
   return (
-    <Layout leftSideContent={''} leftSideTitle={''}>
+    <LayoutAuthenticated>
       <Head>
         <title>Devocional</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -523,7 +523,7 @@ const DoDevotional: NextPage = () => {
       ) : (
         <Text>Carregando...</Text>
       )}
-    </Layout>
+    </LayoutAuthenticated>
   )
 }
 

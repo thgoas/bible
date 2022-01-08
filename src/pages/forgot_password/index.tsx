@@ -18,7 +18,7 @@ import { NextPage } from 'next'
 import { useForm } from 'react-hook-form'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
-import LayoutProtected from '../../components/LayoutProtected'
+import LayoutAuthenticating from '../../components/LayoutAuthenticating'
 import { useMutation } from '@apollo/client'
 import { FORGOT_PASSWORD } from '../../graphql/forgotPassword'
 
@@ -53,7 +53,7 @@ const ForgotPassword: NextPage = () => {
   }, [data])
 
   return (
-    <LayoutProtected>
+    <LayoutAuthenticating>
       <Flex
         minH={'100vh'}
         align={'center'}
@@ -150,7 +150,7 @@ const ForgotPassword: NextPage = () => {
           </Box>
         </Stack>
       </Flex>
-    </LayoutProtected>
+    </LayoutAuthenticating>
   )
 }
 export default ForgotPassword

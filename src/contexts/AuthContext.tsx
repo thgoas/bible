@@ -50,6 +50,8 @@ interface ShopsProps {
 interface UserProps {
   id: string
   name: string
+  email: string
+  url: string
   profiles: [ProfilesProps]
   shops: [ShopsProps]
   token: string
@@ -58,10 +60,11 @@ interface AuthContextProps {
   isAuthenticated?: boolean
   signIn: (data: SignInProps) => Promise<void>
   signOut: () => void
-  loginError?: any
+  resetLogin?: () => void
   loading?: boolean
   user?: UserProps
   loginLoading?: boolean
+  errorLogin?: any
 }
 
 interface SignInProps {
@@ -74,9 +77,16 @@ export const AuthContext = createContext({} as AuthContextProps)
 export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<UserProps | null>(null)
   const [loading, setLoading] = useState(true)
-  const [loginError, setLoginError] = useState(null)
 
-  const [login, { data: loginData, loading: loginLoading }] = useMutation(LOGIN)
+  const [
+    login,
+    {
+      data: loginData,
+      loading: loginLoading,
+      error: errorLogin,
+      reset: resetLogin
+    }
+  ] = useMutation(LOGIN)
   const [loadSession, { error: errorLoadSession }] = useLazyQuery(
     LOAD_SESSION,
     {
@@ -103,8 +113,8 @@ export const AuthProvider: React.FC = ({ children }) => {
           password
         }
       })
-    } catch (e) {
-      setLoginError(e)
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -151,8 +161,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         signOut,
         user,
         loading,
-        loginError,
-        loginLoading
+
+        loginLoading,
+        resetLogin,
+        errorLogin
       }}
     >
       {children}

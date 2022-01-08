@@ -6,6 +6,7 @@ export const LOGIN = gql`
       id
       name
       email
+      url
       profiles {
         id
         name
@@ -21,6 +22,7 @@ export const LOAD_SESSION = gql`
       id
       name
       email
+      url
       profiles {
         id
         name

@@ -28,7 +28,7 @@ const RightSide: NextPage<RightSideProps> = (props) => {
           // mx={{ base: '35%', xl: '0%' }}
           borderRadius="xl"
           borderColor="#D7D7D7"
-          bg="red"
+          // bg="red"
           // boxShadow="xl"
           pos={{ base: null, xl: 'fixed' }}
           right="1%"
@@ -50,7 +50,7 @@ const RightSide: NextPage<RightSideProps> = (props) => {
           ml={{ base: null, lg: '25%', xl: null }}
           borderRadius="xl"
           borderColor="#D7D7D7"
-          bg="red"
+          // bg="red"
           // boxShadow="xl"
           pos={{ base: null, xl: 'fixed' }}
           right="1%"

@@ -13,7 +13,7 @@ import { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
 
-import Layout from '../../components/Layout'
+import LayoutAuthenticated from '../../components/LayoutAuthenticated'
 import ListTable from '../../components/ListTable'
 import Protected from '../../components/Protected'
 import { DEVOTIONAL } from '../../graphql/devotional'
@@ -34,7 +34,7 @@ const Devotional: NextPage = () => {
   }, [user])
   return (
     <Protected>
-      <Layout leftSideContent={''} leftSideTitle={''}>
+      <LayoutAuthenticated>
         <Head>
           <title>Devocional</title>
           <meta
@@ -76,7 +76,7 @@ const Devotional: NextPage = () => {
         <ListTable variant={true} data={data?.devotional} />
 
         <Box></Box>
-      </Layout>
+      </LayoutAuthenticated>
     </Protected>
   )
 }

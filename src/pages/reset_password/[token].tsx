@@ -4,30 +4,27 @@ import {
   useColorModeValue,
   Stack,
   Heading,
-  Alert,
-  AlertIcon,
-  CloseButton,
   Box,
   FormControl,
   FormLabel,
   Input,
   Button,
-  Link,
   Text,
   InputGroup,
-  InputRightElement
+  InputRightElement,
+  useToast
 } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import LayoutProtected from '../../components/LayoutProtected'
+import LayoutAuthenticating from '../../components/LayoutAuthenticating'
 import { RESET_PASSWORD } from '../../graphql/resetPassword'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 
 const ResetPassword: NextPage = () => {
   const router = useRouter()
+  const toast = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [password, setPassword] = useState('')
@@ -41,8 +38,6 @@ const ResetPassword: NextPage = () => {
     setValue
   } = useForm()
 
-  const [error, setError] = useState(null)
-
   const [resetPassword, { data, loading, reset }] = useMutation(RESET_PASSWORD)
 
   const onSubmit = async (value) => {
@@ -55,8 +50,15 @@ const ResetPassword: NextPage = () => {
       })
     } catch (error) {
       console.log(error)
+      toast({
+        title: 'Recuperar senha.',
+        description: error?.toString().substring(26),
+        status: 'warning',
+        duration: 5000,
+        isClosable: true
+      })
 
-      setError(error.toString().substring(26))
+      // setError(error.toString().substring(26))
       // throw new Error(error)
       reset()
       setValue('password', '')
@@ -80,16 +82,26 @@ const ResetPassword: NextPage = () => {
   useEffect(() => {
     setValue('password', '')
     setValue('confirmPassword', '')
+
     if (data?.resetPassword.name) {
       setTimeout(function () {
         router.push('/login')
       }, 3000)
+
+      toast({
+        title: 'Recuperar senha.',
+        description: 'Sua Senha Foi Alterada com sucesso!!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true
+      })
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   return (
-    <LayoutProtected>
+    <LayoutAuthenticating>
       <Flex
         minH={'100vh'}
         align={'center'}
@@ -105,36 +117,7 @@ const ResetPassword: NextPage = () => {
               A senha deve conter no mínimo seis caracteres...
             </Text>
           </Stack>
-          {error && (
-            <Alert status="error">
-              <AlertIcon />
-              {error}
-              <CloseButton
-                onClick={() => setError(null)}
-                position="absolute"
-                right="8px"
-                top="8px"
-              />
-            </Alert>
-          )}
-          {data && (
-            <Alert status="success">
-              <AlertIcon />
-              {data?.resetPassword.name ? (
-                <Flex flexDirection={'column'}>
-                  <Text fontFamily={'roboto'}>
-                    Sua Senha Foi Alterada com sucesso!!
-                  </Text>
-                </Flex>
-              ) : null}
-              <CloseButton
-                onClick={() => reset()}
-                position="absolute"
-                right="8px"
-                top="8px"
-              />
-            </Alert>
-          )}
+
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
@@ -251,7 +234,7 @@ const ResetPassword: NextPage = () => {
           </Box>
         </Stack>
       </Flex>
-    </LayoutProtected>
+    </LayoutAuthenticating>
   )
 }
 

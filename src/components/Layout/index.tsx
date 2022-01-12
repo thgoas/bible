@@ -29,7 +29,7 @@ const Layout: NextPage<LayoutProps> = (props) => {
             title={props.leftSideTitle}
           />
           <Content>{props.children}</Content>
-          <RightSide content="conteudo direito" title="titulo" />
+          <RightSide content="" title="" />
         </Flex>
       </Fade>
     </Flex>

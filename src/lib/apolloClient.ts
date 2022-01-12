@@ -5,8 +5,9 @@ import { setContext } from '@apollo/client/link/context'
 import { parseCookies } from 'nookies'
 
 const httpLink = createUploadLink({
-  uri: 'http://localhost:4000/graphql'
+  // uri: 'http://localhost:4000/graphql'
   //uri: process.env.NEXT_PUBLIC_APOLLO_CLIENT_URI
+  uri: 'http://172.16.0.1:4000/graphql'
 })
 // const httpLink = createHttpLink({
 //   uri: 'http://localhost:4000/graphql'

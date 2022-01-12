@@ -50,6 +50,9 @@ const SigNup: NextPage = () => {
     formState: { errors }
   } = useForm()
 
+  const privacyPolicy = process.env.NEXT_PUBLIC_URL_POLICY
+  const terms = process.env.NEXT_PUBLIC_URL_TERMS
+
   const toast = useToast()
 
   const [registerUser, { data, loading, reset }] = useMutation(REGISTER_USER)
@@ -205,6 +208,20 @@ const SigNup: NextPage = () => {
                     Mínimo 6 caracteres!
                   </Text>
                 )}
+                <Text mt="2" fontSize={'xs'} fontFamily={'roboto'}>
+                  Ao clicares em Cadastrar, aceitas os nossos{' '}
+                  <Link href={terms} color="blue.400">
+                    Termos
+                  </Link>
+                  , a nossa{' '}
+                  <Link href={privacyPolicy} color="blue.400">
+                    Política de Dados
+                  </Link>{' '}
+                  e a nossa{' '}
+                  <Link href={privacyPolicy} color="blue.400">
+                    Política de cookies.
+                  </Link>
+                </Text>
                 <Stack spacing={10} pt={2}>
                   <Button
                     loadingText="Salvando"

@@ -36,6 +36,7 @@ export const NEW_DEVOTIONAL = gql`
       conditions_promise
       personal_applications
       sins_to_avoid
+      personal_notes
       user {
         id
         name
@@ -44,9 +45,12 @@ export const NEW_DEVOTIONAL = gql`
       book {
         id
         name
+        abbreviation
       }
       chapter
       verses
+      amount
+      amount_day
     }
   }
 `
@@ -61,6 +65,7 @@ export const DEVOTIONAL = gql`
       conditions_promise
       personal_applications
       sins_to_avoid
+      personal_notes
       user {
         id
         name
@@ -69,10 +74,52 @@ export const DEVOTIONAL = gql`
       book {
         id
         name
+        abbreviation
       }
       chapter
       verses
       creation_date
+      amount
+      amount_day
+    }
+  }
+`
+
+export const DEVOTIONAL_MINIMUM = gql`
+  query devotional($id: Int, $user_id: Int) {
+    devotional(filter: { id: $id, user_id: $user_id }) {
+      id
+      user {
+        id
+      }
+      book {
+        id
+        name
+      }
+      chapter
+      verses
+      creation_date
+      amount
+      amount_day
+    }
+  }
+`
+export const DELETE_DEVOTIONAL = gql`
+  mutation deleteDevotional($id: Int, $user_id: Int) {
+    deleteDevotional(filter: { id: $id, user_id: $user_id }) {
+      id
+      user {
+        id
+      }
+      book {
+        id
+        name
+      }
+      chapter
+      verses
+      creation_date
+      amount
+      amount_day
     }
   }
 `

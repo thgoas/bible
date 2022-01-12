@@ -13,9 +13,7 @@ import {
   Text
 } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { NEW_DEVOTIONAL } from '../../graphql/devotional'
-import useAuth from '../../hooks/useAuth'
+import { DELETE_DEVOTIONAL, DEVOTIONAL_MINIMUM } from '../../graphql/devotional'
 
 interface DialogModalProps {
   isOpen: boolean
@@ -24,24 +22,22 @@ interface DialogModalProps {
   resetFields: () => void
 }
 
-const DialogDevotional: NextPage<DialogModalProps> = (props) => {
-  const [newDevotional, { data, loading, error, reset }] =
-    useMutation(NEW_DEVOTIONAL)
-  const { user } = useAuth()
-  const router = useRouter()
+const DialogDevotionalDelete: NextPage<DialogModalProps> = (props) => {
+  const [deleteDevotional, { data, loading, error, reset }] = useMutation(
+    DELETE_DEVOTIONAL,
+    {
+      refetchQueries: [DEVOTIONAL_MINIMUM, 'devotional']
+    }
+  )
 
   const onSubmit = async () => {
     const { data } = props
-    const user_id = Number(user.id)
-    const chapter = Number(router.query.chapter)
-    const book_id = Number(router.query.book)
+
     try {
-      await newDevotional({
+      await deleteDevotional({
         variables: {
-          ...data,
-          user_id,
-          chapter,
-          book_id
+          user_id: data?.user.id,
+          id: data?.id
         }
       })
     } catch (e) {
@@ -52,10 +48,6 @@ const DialogDevotional: NextPage<DialogModalProps> = (props) => {
   const onClosed = () => {
     props.resetFields()
     reset()
-    console.log(data)
-    router.push(
-      `/devotional/view_devotional/${data?.newDevotional.user.id}/${data?.newDevotional.id}`
-    )
   }
 
   return (
@@ -67,7 +59,7 @@ const DialogDevotional: NextPage<DialogModalProps> = (props) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Salvar Devocional</ModalHeader>
+          <ModalHeader>Excluir Devocional</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             {loading ? (
@@ -81,11 +73,11 @@ const DialogDevotional: NextPage<DialogModalProps> = (props) => {
                 />
               </Flex>
             ) : data ? (
-              <Text>Devocional Salvo com sucesso</Text>
+              <Text>Devocional excluído com sucesso!!!</Text>
             ) : error ? (
               <Text>{error.message.substring(19)}</Text>
             ) : (
-              <Text>Deseja salvar o seu devocional?.</Text>
+              <Text>Deseja excluir o devocional permanentemente?.</Text>
             )}
           </ModalBody>
           <ModalFooter>
@@ -109,4 +101,4 @@ const DialogDevotional: NextPage<DialogModalProps> = (props) => {
   )
 }
 
-export default DialogDevotional
+export default DialogDevotionalDelete

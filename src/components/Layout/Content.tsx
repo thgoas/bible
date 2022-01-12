@@ -12,22 +12,18 @@ const Content: React.FC = ({ children }) => {
           mt="55px"
           mb="12px"
           ml={{
-            base: '1%',
+            // base: '-10px',
             xl: '20%',
-            lg: '10%'
-            // md: '10%',
-            // sm: '0%',
-            // xs: '1%'
+            lg: '10%',
+            md: '10%'
           }}
           mr={{
-            base: '1%',
+            // base: '-10px',
             xl: '20%',
-            lg: '10%'
-            // md: '10%',
-            // sm: '5%',
-            // xs: '1%'
+            lg: '10%',
+            md: '10%'
           }}
-          p="4"
+          py="4"
         >
           {children}
         </Box>
@@ -37,7 +33,7 @@ const Content: React.FC = ({ children }) => {
           mb="12px"
           ml={{ base: '1%', lg: '25%', xl: '20%' }}
           mr={{ base: '1%', xl: '20%' }}
-          p="4"
+          py="4"
         >
           {children}
         </Box>

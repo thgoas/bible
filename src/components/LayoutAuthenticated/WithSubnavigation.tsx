@@ -119,44 +119,42 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
           </Button>
           {props.user?.id ? (
-            <>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={'full'}
-                  variant={'link'}
-                  cursor={'pointer'}
-                  minW={0}
-                >
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={'full'}
+                variant={'link'}
+                cursor={'pointer'}
+                minW={0}
+              >
+                <Avatar
+                  size={'sm'}
+                  src={props.user?.url ? props.user?.url : null}
+                  name={props.user?.name}
+                />
+              </MenuButton>
+              <MenuList alignItems={'center'}>
+                <br />
+                <Center>
                   <Avatar
-                    size={'sm'}
+                    size={'2xl'}
                     src={props.user?.url ? props.user?.url : null}
                     name={props.user?.name}
                   />
-                </MenuButton>
-                <MenuList alignItems={'center'}>
-                  <br />
-                  <Center>
-                    <Avatar
-                      size={'2xl'}
-                      src={props.user?.url ? props.user?.url : null}
-                      name={props.user?.name}
-                    />
-                  </Center>
-                  <br />
-                  <Center>
-                    <p>{name[0]}</p>
-                  </Center>
-                  <br />
-                  <MenuDivider />
-                  {/* <MenuItem>Your Servers</MenuItem> */}
-                  <NextLink href={'/user_config'}>
-                    <MenuItem>Configurações</MenuItem>
-                  </NextLink>
-                  <MenuItem onClick={signOut}>Sair</MenuItem>
-                </MenuList>
-              </Menu>
-            </>
+                </Center>
+                <br />
+                <Center>
+                  <p>{name[0]}</p>
+                </Center>
+                <br />
+                <MenuDivider />
+                {/* <MenuItem>Your Servers</MenuItem> */}
+                <NextLink href={'/user_config'}>
+                  <MenuItem>Configurações</MenuItem>
+                </NextLink>
+                <MenuItem onClick={signOut}>Sair</MenuItem>
+              </MenuList>
+            </Menu>
           ) : (
             <>
               <NextLink href={'/login'}>

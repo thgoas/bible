@@ -62,8 +62,7 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     resetLogin()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [resetLogin])
 
   return (
     <LayoutAuthenticating>

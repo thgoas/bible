@@ -80,14 +80,19 @@ const ContentBible: NextPage<ContentBibleProps> = (props) => {
       <Stack direction={{ base: 'row', lg: 'column' }}>
         {/* <Button>Buscar</Button> */}
         <FormControl>
-          <FormLabel fontFamily="Roboto" fontWeight="700" hidden={!breakPoint}>
+          <FormLabel
+            fontFamily="roboto"
+            fontWeight="700"
+            fontSize={{ base: 'xs', md: 'md' }}
+            hidden={!breakPoint}
+          >
             Versão
           </FormLabel>
           <Select
             {...register('version')}
             onChange={handleVersionSearch}
             value={version}
-            fontFamily="Roboto"
+            fontFamily="roboto"
             size={breakPointSize}
           >
             {versions.map((version) => {
@@ -101,14 +106,19 @@ const ContentBible: NextPage<ContentBibleProps> = (props) => {
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel fontFamily="Roboto" fontWeight="700" hidden={!breakPoint}>
+          <FormLabel
+            fontFamily="roboto"
+            fontWeight="700"
+            hidden={!breakPoint}
+            fontSize={{ base: 'xs', md: 'md' }}
+          >
             Testamento
           </FormLabel>
           <Select
             {...register('testament')}
             onChange={handleTestamentSearch}
             value={testament}
-            fontFamily="Roboto"
+            fontFamily="roboto"
             size={breakPointSize}
           >
             {testaments.map((testament) => {
@@ -122,14 +132,19 @@ const ContentBible: NextPage<ContentBibleProps> = (props) => {
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel fontFamily="Roboto" fontWeight="700" hidden={!breakPoint}>
+          <FormLabel
+            fontFamily="roboto"
+            fontWeight="700"
+            hidden={!breakPoint}
+            fontSize={{ base: 'xs', md: 'md' }}
+          >
             Livro
           </FormLabel>
           <Select
             {...register('book')}
             onChange={handleBookSearch}
             value={books}
-            fontFamily="Roboto"
+            fontFamily="roboto"
             size={breakPointSize}
           >
             {book?.map((book) => {
@@ -144,14 +159,18 @@ const ContentBible: NextPage<ContentBibleProps> = (props) => {
         {breakPoint ? (
           <>
             <FormControl>
-              <FormLabel fontFamily="Roboto" fontWeight="700">
+              <FormLabel
+                fontFamily="roboto"
+                fontWeight="700"
+                fontSize={{ base: 'xs', md: 'md' }}
+              >
                 Capítulo
               </FormLabel>
               <Select
                 {...register('chapter')}
                 onChange={handleChapterSearch}
                 value={chapter}
-                fontFamily="Roboto"
+                fontFamily="roboto"
                 size={breakPointSize}
               >
                 {chapterCount?.map((chapter) => {
@@ -166,7 +185,7 @@ const ContentBible: NextPage<ContentBibleProps> = (props) => {
           </>
         ) : (
           <>
-            <Text fontFamily="Roboto" fontWeight="700" textAlign="center">
+            <Text fontFamily="roboto" fontWeight="700" textAlign="center">
               Capítulos
             </Text>
             <Box h="55vh" overflow={'auto'}>
@@ -194,7 +213,7 @@ const ContentBible: NextPage<ContentBibleProps> = (props) => {
                       textAlign="center"
                       m="2"
                       value={resp.chapter}
-                      fontFamily="Roboto"
+                      fontFamily="roboto"
                       key={resp.chapter}
                     >
                       {resp.chapter}

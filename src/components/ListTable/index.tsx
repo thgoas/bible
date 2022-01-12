@@ -1,14 +1,13 @@
 import {
   DeleteIcon,
-  EditIcon,
   TriangleDownIcon,
   TriangleUpIcon,
   ArrowRightIcon,
   ArrowLeftIcon,
   ChevronRightIcon,
-  ChevronLeftIcon
+  ChevronLeftIcon,
+  ViewIcon
 } from '@chakra-ui/icons'
-import { Flex } from '@chakra-ui/layout'
 import {
   Table,
   Thead,
@@ -25,7 +24,9 @@ import {
   NumberInputField,
   NumberInputStepper,
   NumberIncrementStepper,
-  NumberDecrementStepper
+  NumberDecrementStepper,
+  useColorModeValue,
+  Flex
 } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
@@ -33,6 +34,8 @@ import format from 'date-fns/format'
 
 import { useEffect, useMemo, useState } from 'react'
 import { useTable, useSortBy, usePagination } from 'react-table'
+import { useRouter } from 'next/router'
+import DialogDevotionalDelete from '../DialogDevotionalDelete'
 
 interface TableSellersProps {
   data?: any
@@ -40,20 +43,22 @@ interface TableSellersProps {
 }
 
 const ListTable: React.FC<TableSellersProps> = (props) => {
+  const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [isOpenAlert, setIsOpenAlert] = useState(false)
 
   const [dataDelete, setDataDelete] = useState(null)
-  const [edit, setEdit] = useState(null)
 
-  function handleEdit(data: any) {
-    setEdit(data)
-    onOpen()
+  function handleView(data: any) {
+    router.push(`/devotional/view_devotional/${data.user.id}/${data.id}`)
   }
 
   function handleDelete(data: any) {
     setDataDelete(data)
-    setIsOpenAlert(true)
+    onOpen()
+  }
+
+  const handleResetFields = () => {
+    onClose()
   }
 
   // console.log('data', props.data)
@@ -96,16 +101,16 @@ const ListTable: React.FC<TableSellersProps> = (props) => {
           return (
             <Flex alignItems="center" justifyContent="end">
               <Button
-                onClick={() => handleEdit(data)}
-                colorScheme="teal"
+                onClick={() => handleView(data)}
+                colorScheme={useColorModeValue('teal', null)}
                 mr="1"
                 size="xs"
               >
-                <EditIcon />
+                <ViewIcon />
               </Button>
               <Button
                 onClick={() => handleDelete(data)}
-                colorScheme="red"
+                colorScheme={useColorModeValue('red', null)}
                 size="xs"
               >
                 <DeleteIcon />
@@ -147,16 +152,18 @@ const ListTable: React.FC<TableSellersProps> = (props) => {
 
   useEffect(() => {
     if (!props.variant) {
-      setHiddenColumns([
-        'creation_date',
-        'assets_classification.description',
-        'assets_types.description'
-      ])
+      setHiddenColumns(['book.name', 'verses', 'chapter'])
     }
   }, [setHiddenColumns, props.variant])
 
   return (
     <>
+      <DialogDevotionalDelete
+        data={dataDelete}
+        isOpen={isOpen}
+        onClose={onClose}
+        resetFields={handleResetFields}
+      />
       <Table size="sm" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {
@@ -197,8 +204,6 @@ const ListTable: React.FC<TableSellersProps> = (props) => {
                   const { key, ...restCellProps } = cell.getCellProps()
                   return (
                     <Td
-                      onClick={(e) => console.log('click', e)}
-                      cursor={'pointer'}
                       key={key}
                       {...restCellProps}
                       isNumeric={cell.column.isNumeric}

@@ -16,6 +16,7 @@ import {
   TabPanels,
   Tabs,
   Textarea,
+  useBreakpointValue,
   useDisclosure
 } from '@chakra-ui/react'
 import { NextPage } from 'next'
@@ -29,9 +30,13 @@ import DialogDevotional from '../../components/DialogDevotional'
 import LayoutAuthenticated from '../../components/LayoutAuthenticated'
 import useBible from '../../hooks/useBible'
 
+import NextLink from 'next/link'
+
 const DoDevotional: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
+
+  const breakPoint = useBreakpointValue({ base: false, md: true })
   const {
     handleVerses,
     dataVerse,
@@ -129,13 +134,13 @@ const DoDevotional: NextPage = () => {
     }
   }, [dataVerse, dataBook, dataChapterCount, dataTestaments, dataVersions])
 
-  const buttonNext = () => {
+  const buttonNext = (disable: boolean) => {
     return (
       <>
         <Flex justifyContent={'end'}>
           <Button
             mt="6"
-            display={{ base: 'none', md: 'inline-flex' }}
+            // display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}
             onClick={() => setTabIndex(tabIndex + 1)}
@@ -144,21 +149,22 @@ const DoDevotional: NextPage = () => {
             _hover={{
               bg: 'blue.500'
             }}
+            disabled={disable}
           >
-            Próximo
+            {!breakPoint ? '>' : 'Próximo '}
           </Button>
         </Flex>
       </>
     )
   }
 
-  const buttonPrevious = () => {
+  const buttonPrevious = (disable) => {
     return (
       <>
         <Flex justifyContent={'end'}>
           <Button
             mt="6"
-            display={{ base: 'none', md: 'inline-flex' }}
+            // display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}
             onClick={() => setTabIndex(tabIndex - 1)}
@@ -167,9 +173,34 @@ const DoDevotional: NextPage = () => {
             _hover={{
               bg: 'blue.500'
             }}
+            disabled={disable}
           >
-            Voltar
+            {!breakPoint ? '<' : 'voltar'}
           </Button>
+        </Flex>
+      </>
+    )
+  }
+  const buttonCancel = () => {
+    return (
+      <>
+        <Flex justifyContent={'end'}>
+          <NextLink href={'/devotional'}>
+            <Button
+              mt="6"
+              // display={{ base: 'none', md: 'inline-flex' }}
+              fontSize={'sm'}
+              fontWeight={600}
+              // onClick={() => setTabIndex(tabIndex - 1)}
+              bg={'gray.400'}
+              color={'white'}
+              _hover={{
+                bg: 'red.500'
+              }}
+            >
+              Cancelar
+            </Button>
+          </NextLink>
         </Flex>
       </>
     )
@@ -463,6 +494,7 @@ const DoDevotional: NextPage = () => {
         onClose={onClose}
         resetFields={handleResetFields}
       />
+
       {!loading ? (
         <Tabs
           index={tabIndex}
@@ -476,9 +508,15 @@ const DoDevotional: NextPage = () => {
             <Tab>Leitura</Tab>
             <Tab>Devocional</Tab>
           </TabList>
+
           <TabPanels>
-            <TabPanel>
-              <Text fontFamily={'Roboto'} fontSize={'lg'} fontWeight={'700'}>
+            <TabPanel h="65vh" overflow={'auto'}>
+              <Text
+                textAlign={'justify'}
+                fontFamily={'Roboto'}
+                fontSize={'lg'}
+                fontWeight={'700'}
+              >
                 Antes de fazer a leitura Bíblica, faça uma oração legal, pedindo
                 entendimento, pra que Deus te mostre o que Ele quer que você
                 veja, e te dê forças pra cumprir o seu querer.
@@ -494,7 +532,7 @@ const DoDevotional: NextPage = () => {
               </Text>
               {contentBible()}
             </TabPanel>
-            <TabPanel h="70vh" overflow={'auto'}>
+            <TabPanel h="65vh" overflow={'auto'}>
               <Text
                 mt="6"
                 mb="6"
@@ -506,18 +544,26 @@ const DoDevotional: NextPage = () => {
                 Durante a Leitura, Selecione os versículos que te chamam
                 atenção.
               </Text>
-              <Box w="full%">{bible()}</Box>
+              <Box w="full">{bible()}</Box>
             </TabPanel>
-            <TabPanel h="70vh" overflow={'auto'}>
+            <TabPanel h="65vh" overflow={'auto'}>
               {studyGuide()}
             </TabPanel>
           </TabPanels>
-          <Flex>
+          <Flex mt="2">
             <Box>
-              {tabIndex === 1 || tabIndex === 2 ? buttonPrevious() : null}
+              {tabIndex === 1 || tabIndex === 2
+                ? buttonPrevious(false)
+                : buttonPrevious(true)}
             </Box>
             <Spacer />
-            <Box>{tabIndex === 0 || tabIndex === 1 ? buttonNext() : null}</Box>
+            <Box>{buttonCancel()}</Box>
+            <Spacer />
+            <Box>
+              {tabIndex === 0 || tabIndex === 1
+                ? buttonNext(false)
+                : buttonNext(true)}
+            </Box>
           </Flex>
         </Tabs>
       ) : (

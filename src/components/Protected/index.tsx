@@ -56,6 +56,8 @@ const Protected: React.FC = (props) => {
 
     if (isRouter === 'user_config' && user.id) {
       return renderContent()
+    } else if (isRouter.includes('devotional') && user.id) {
+      return renderContent()
     } else {
       router.push('/')
     }

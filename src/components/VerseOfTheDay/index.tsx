@@ -16,7 +16,12 @@ interface VerseOfTheDayProps {
 }
 const VerseOfTheDay: NextPage<VerseOfTheDayProps> = (props) => {
   const router = useRouter()
-  const breakPointSize = useBreakpointValue({ base: 'xs', sm: 'sm', lg: 'md' })
+  const breakPointSize = useBreakpointValue({
+    base: 'xs',
+    sm: 'sm',
+    lg: 'md',
+    xl: 'md'
+  })
   const breakPointFontSize = useBreakpointValue({
     base: 'lg',
     sm: 'xl',
@@ -76,7 +81,6 @@ const VerseOfTheDay: NextPage<VerseOfTheDayProps> = (props) => {
         borderRadius="xl"
         borderColor="#D7D7D7"
         // boxShadow={'xl'}
-        // bg="white"
       >
         <Heading as="h1" mb="4" fontFamily="roboto" size="lg">
           Versículo de Hoje
@@ -102,8 +106,8 @@ const VerseOfTheDay: NextPage<VerseOfTheDayProps> = (props) => {
                   key={r.id}
                   fontSize={breakPointFontSize}
                   fontFamily="serif"
+                  // textAlign={'justify'}
                 >
-                  {' '}
                   {r.text}{' '}
                 </Text>
               )
@@ -113,7 +117,7 @@ const VerseOfTheDay: NextPage<VerseOfTheDayProps> = (props) => {
           mb="2"
           mt="6"
           display="flex"
-          alignItems="center"
+          alignItems={{ base: 'none', md: 'center' }}
           flexDirection={{ base: 'column', md: 'row' }}
         >
           <Heading fontFamily="roboto" size="sm" mb={{ base: '4', md: '0' }}>
@@ -121,8 +125,8 @@ const VerseOfTheDay: NextPage<VerseOfTheDayProps> = (props) => {
             {data ? data[0].verse : null}-{data ? data.length : null}
           </Heading>
           <Spacer />
-          <Flex alignItems="center">
-            <Heading fontFamily="roboto" size={breakPointSize} mr="4">
+          <Flex ml={{ base: 'none', md: '20px' }} alignItems="center">
+            <Heading fontFamily="roboto" size={'sm'} mr="4">
               Versão:
             </Heading>
             {bibleVersion()}

@@ -110,7 +110,6 @@ const DoDevotional: NextPage = () => {
   }, [router.query])
 
   useEffect(() => {
-    console.log(versionId, chapterId, bookId, testamentId)
     handleQuery()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [versionId, chapterId, bookId, testamentId])

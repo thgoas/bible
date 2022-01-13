@@ -52,7 +52,6 @@ const Protected: React.FC = (props) => {
 
   if (user && !loading) {
     const isUser = user.profiles.map((p) => p.name)
-    // console.log('aqui', user, loading)
 
     if (isRouter === 'user_config' && user.id) {
       return renderContent()
@@ -68,24 +67,17 @@ const Protected: React.FC = (props) => {
     }
 
     if (!isUser.includes(isRouter)) {
-      // console.log('dentro do 2 if')
-
       router.push('/')
     } else {
       return renderContent()
     }
-    // console.log('fim')
     return renderLoading()
   } else if (loading) {
-    // console.log('loading')
-
     return renderLoading()
   } else if (isRouter === 'devotional') {
-    // console.log('else')
     router.push('/devotional/terms')
     return null
   } else if (isRouter === 'user_config') {
-    // console.log('else')
     router.push('/')
     return null
   } else {

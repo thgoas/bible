@@ -61,8 +61,6 @@ const ListTable: React.FC<TableSellersProps> = (props) => {
     onClose()
   }
 
-  // console.log('data', props.data)
-
   const data = useMemo(() => (props.data ? props.data : []), [props.data])
 
   const columns = useMemo(
@@ -96,7 +94,6 @@ const ListTable: React.FC<TableSellersProps> = (props) => {
         // eslint-disable-next-line react/display-name
         Cell: (value) => {
           const data = value.data[value.row.id]
-          //  console.log(value)
 
           return (
             <Flex alignItems="center" justifyContent="end">

@@ -39,7 +39,6 @@ const Login: NextPage = () => {
     await signIn(data)
   }
   useEffect(() => {
-    console.log(errorLogin)
     if (errorLogin) {
       // setError(errorLogin?.toString().substring(7))
       toast({

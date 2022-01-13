@@ -65,7 +65,6 @@ const DialogUserConfig: NextPage<DialogUserConfigProps> = (props) => {
 
   const [deleteAccount] = useMutation(DELETE_ACCOUNT, {
     onCompleted: (data) => {
-      console.log('delete account', data)
       setLoading(false)
       setMessage(data.deleteAccount.message)
     },

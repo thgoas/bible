@@ -32,7 +32,6 @@ const Devotional: NextPage = () => {
   const size = useBreakpointValue({ base: 'sm', md: 'md' })
 
   const handleOnClick = () => {
-    console.log(data)
     if (data?.devotional[0]?.amount_day >= 3) {
       toast({
         title: 'Limite de Devocionais.',

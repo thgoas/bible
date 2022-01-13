@@ -125,7 +125,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     fetchPolicy: 'network-only'
   })
-  // console.log('data', data)
 
   return {
     props: {
@@ -133,10 +132,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       dataVersions,
       dataReflection
     }
-    // revalidate: 10
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    // revalidate: 10 // In seconds
   }
 }

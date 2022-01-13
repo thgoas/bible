@@ -52,7 +52,6 @@ const DialogDevotional: NextPage<DialogModalProps> = (props) => {
   const onClosed = () => {
     props.resetFields()
     reset()
-    console.log(data)
     router.push(
       `/devotional/view_devotional/${data?.newDevotional.user.id}/${data?.newDevotional.id}`
     )

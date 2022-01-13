@@ -27,7 +27,6 @@ const ViewDevotional: NextPage = () => {
 
   const [devotional] = useLazyQuery(DEVOTIONAL, {
     onCompleted: (data) => {
-      console.log('aqui2')
       const devotional = data.devotional[0]
       setData(devotional)
       setLoading(false)
@@ -54,10 +53,8 @@ const ViewDevotional: NextPage = () => {
   useEffect(() => {
     if (params !== undefined && params.length > 0) {
       setLoading(true)
-      console.log(params)
       const id = Number(params[1])
       const user_id = Number(params[0])
-      console.log(id, user_id)
       handleDevotional(id, user_id)
     }
 

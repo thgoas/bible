@@ -47,7 +47,6 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
   const { isOpen, onToggle } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
   const name = props.user?.name.split(' ')
-  console.log(name)
   const { signOut } = useAuth()
   return (
     <Box>

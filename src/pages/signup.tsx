@@ -91,7 +91,6 @@ const SigNup: NextPage = () => {
   }
 
   useEffect(() => {
-    console.log(data)
     if (data?.registerUser.name) {
       router.push(
         `/registered_successfully/${data.registerUser.name}/${data.registerUser.email}`

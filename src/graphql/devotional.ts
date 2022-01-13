@@ -13,6 +13,7 @@ export const NEW_DEVOTIONAL = gql`
     $book_id: Int
     $chapter: Int
     $verses: String
+    $creation_date: Date
   ) {
     newDevotional(
       data: {
@@ -27,6 +28,7 @@ export const NEW_DEVOTIONAL = gql`
         book_id: $book_id
         chapter: $chapter
         verses: $verses
+        creation_date: $creation_date
       }
     ) {
       id

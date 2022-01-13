@@ -35,13 +35,15 @@ const DialogDevotional: NextPage<DialogModalProps> = (props) => {
     const user_id = Number(user.id)
     const chapter = Number(router.query.chapter)
     const book_id = Number(router.query.book)
+    const creation_date = new Date()
     try {
       await newDevotional({
         variables: {
           ...data,
           user_id,
           chapter,
-          book_id
+          book_id,
+          creation_date
         }
       })
     } catch (e) {

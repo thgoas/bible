@@ -20,8 +20,9 @@ const RegisteredSuccessfully: NextPage = () => {
         </Heading>
 
         <Text mt="15px" textAlign={'center'}>
-          <b>{data[0]}</b> Verifique o E-mail <b>{data[1]}</b> e siga as
-          instruções para confirmar seu cadastro!
+          <b>{data ? data[0] : null}</b> Verifique o E-mail{' '}
+          <b>{data ? data[1] : null}</b> e siga as instruções para confirmar seu
+          cadastro!
         </Text>
       </Flex>
     </LayoutAuthenticating>

@@ -45,8 +45,8 @@ const ActivateAccount: NextPage = () => {
 
   const render = () => {
     if (data?.activateAccount.name) {
-      const name = 'Fulano' //data?.activateAccount.name
-      const email = 'fulano@email.com' //data?.activateAccount.name
+      const name = data?.activateAccount.name
+      const email = data?.activateAccount.email
       return (
         <Stack>
           <Text fontSize={'lg'}>

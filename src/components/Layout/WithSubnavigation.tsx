@@ -48,6 +48,7 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const name = props.user?.name.split(' ')
   const { signOut } = useAuth()
+
   return (
     <Box>
       <Flex
@@ -98,7 +99,7 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
           <Image
             borderRadius="full"
             boxSize="35px"
-            src={(process.env.NEXT_PUBLIC_URL, 'logo.svg')} //"http://localhost:3000/logo.svg"
+            src={`${process.env.NEXT_PUBLIC_URL}logo.svg`} //"http://localhost:3000/logo.svg"
             alt="Logo"
             bg={useColorModeValue('none', 'white')}
           />

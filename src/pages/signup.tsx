@@ -257,6 +257,7 @@ export default SigNup
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   accessToken(ctx)
+  console.log('ctx', ctx)
   const { data: dataLoadSession } = await client.query({
     query: gql`
       query loadSession {

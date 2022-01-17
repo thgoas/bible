@@ -7,36 +7,6 @@ import { useEffect } from 'react'
 import { createContext } from 'react'
 import { LOAD_SESSION, LOGIN } from '../graphql/auth'
 
-// const LOGIN = gql`
-//   mutation login($email: String!, $password: String!) {
-//     login(data: { email: $email, password: $password }) {
-//       id
-//       name
-//       email
-//       profiles {
-//         id
-//         name
-//         description
-//       }
-//       token
-//     }
-//   }
-// `
-// const LOAD_SESSION = gql`
-//   query loadSession {
-//     loadSession {
-//       id
-//       name
-//       email
-//       profiles {
-//         id
-//         name
-//         description
-//       }
-//       token
-//     }
-//   }
-// `
 interface ProfilesProps {
   id: string
   name: string

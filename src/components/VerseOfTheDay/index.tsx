@@ -122,7 +122,12 @@ const VerseOfTheDay: NextPage<VerseOfTheDayProps> = (props) => {
         >
           <Heading fontFamily="roboto" size="sm" mb={{ base: '4', md: '0' }}>
             {data ? data[0].book.name : null} {data ? data[0].chapter : null}:{' '}
-            {data ? data[0].verse : null}-{data ? data.length : null}
+            {data ? data[0].verse : null}
+            {data
+              ? data.length === 1
+                ? null
+                : '-' + data[data.length - 1].verse
+              : null}
           </Heading>
           <Spacer />
           <Flex ml={{ base: 'none', md: '20px' }} alignItems="center">

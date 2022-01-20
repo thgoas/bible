@@ -51,20 +51,36 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [
     login,
     {
-      data: loginData,
+      // data: loginData,
       loading: loginLoading,
       error: errorLogin,
       reset: resetLogin
     }
-  ] = useMutation(LOGIN)
-  const [loadSession, { error: errorLoadSession }] = useLazyQuery(
-    LOAD_SESSION,
-    {
-      onCompleted: (data) => {
-        authUser(data)
+  ] = useMutation(LOGIN, {
+    onCompleted: (data) => {
+      if (data) {
+        // console.log('loginData', loginData)
+        const { token } = data?.login
+        // console.log(token)
+        // console.log(loginData)
+        setCookie(undefined, 'hora-do-devocional.token', token, {
+          maxAge: 60 * 60 * 24 //1 hour
+        })
+        setUser(data?.login)
+        Router.push('/')
       }
     }
-  )
+  })
+
+  const [loadSession] = useLazyQuery(LOAD_SESSION, {
+    onCompleted: (data) => {
+      authUser(data)
+    },
+    onError: (err) => {
+      console.log(err)
+      setLoading(false)
+    }
+  })
 
   async function authUser(data: any) {
     const user = data.loadSession
@@ -94,25 +110,25 @@ export const AuthProvider: React.FC = ({ children }) => {
     Router.push('/')
   }
 
-  useEffect(() => {
-    if (errorLoadSession !== undefined) {
-      setLoading(false)
-    }
-  }, [errorLoadSession])
+  // useEffect(() => {
+  //   if (errorLoadSession !== undefined) {
+  //     setLoading(false)
+  //   }
+  // }, [errorLoadSession])
 
-  useEffect(() => {
-    if (loginData) {
-      // console.log('loginData', loginData)
-      const { token } = loginData.login
-      // console.log(token)
-      // console.log(loginData)
-      setCookie(undefined, 'hora-do-devocional.token', token, {
-        maxAge: 60 * 60 * 24 //1 hour
-      })
-      setUser(loginData?.login)
-      Router.push('/')
-    }
-  }, [loginData])
+  // useEffect(() => {
+  //   if (loginData) {
+  //     // console.log('loginData', loginData)
+  //     const { token } = loginData.login
+  //     // console.log(token)
+  //     // console.log(loginData)
+  //     setCookie(undefined, 'hora-do-devocional.token', token, {
+  //       maxAge: 60 * 60 * 24 //1 hour
+  //     })
+  //     setUser(loginData?.login)
+  //     Router.push('/')
+  //   }
+  // }, [loginData])
 
   useEffect(() => {
     const { 'hora-do-devocional.token': token } = parseCookies()

@@ -49,11 +49,12 @@ const Protected: React.FC = (props) => {
   }
 
   const isRouter = router.asPath.substring(1)
-
   if (user && !loading) {
     const isUser = user.profiles.map((p) => p.name)
 
-    if (isRouter === 'user_config' && user.id) {
+    if (isUser.includes('admin')) {
+      return renderContent()
+    } else if (isRouter === 'user_config' && user.id) {
       return renderContent()
     } else if (isRouter.includes('devotional') && user.id) {
       return renderContent()
@@ -78,6 +79,9 @@ const Protected: React.FC = (props) => {
     router.push('/devotional/terms')
     return null
   } else if (isRouter === 'user_config') {
+    router.push('/')
+    return null
+  } else if (isRouter.substring(5).includes('admin')) {
     router.push('/')
     return null
   } else {

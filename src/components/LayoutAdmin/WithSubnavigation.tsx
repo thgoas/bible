@@ -38,6 +38,7 @@ import {
 import NextLink from 'next/link'
 import { NextPage } from 'next'
 import useAuth from '../../hooks/useAuth'
+// import useAuth from '../../hooks/useAuth'
 
 interface WithSubNavigationProps {
   user: any
@@ -50,7 +51,6 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const name = props.user?.name.split(' ')
   const { signOut } = useAuth()
-
   return (
     <Box>
       <Flex
@@ -179,6 +179,12 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
                   display={{ base: 'none', md: 'inline-flex' }}
                   fontSize={'sm'}
                   fontWeight={600}
+                  // color={'white'}
+                  // bg={'pink.400'}
+                  // href={'#'}
+                  // _hover={{
+                  //   bg: 'pink.300'
+                  // }}
                   bg={'blue.400'}
                   color={'white'}
                   _hover={{
@@ -297,9 +303,13 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         >
           {children &&
             children.map((child) => (
-              <Link key={child.label} py={2} href={child.href}>
-                {child.label}
-              </Link>
+              <>
+                <NextLink href={child.href}>
+                  <Link key={child.label} py={2}>
+                    {child.label}
+                  </Link>
+                </NextLink>
+              </>
             ))}
         </Stack>
       </Collapse>
@@ -319,7 +329,6 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'Versículos Diários',
     href: '/'
   },
-
   {
     label: 'Bíblia',
     href: '/bible?version=6&testament=1&book=1&chapter=1'
@@ -327,6 +336,21 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Devocional',
     href: '/devotional'
+  },
+  {
+    label: 'Administrador',
+    children: [
+      {
+        label: 'Dashboard',
+        subLabel: 'Visão geral',
+        href: '/admin'
+      },
+      {
+        label: 'Versículo do dia',
+        subLabel: 'Cria os Versículos',
+        href: '/admin/verse_of_the_day'
+      }
+    ]
   }
 ]
 

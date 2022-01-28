@@ -45,6 +45,8 @@ interface WithSubNavigationProps {
 }
 
 const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
+  const profiles = props.user?.profiles.map((r) => r.name).join(',')
+
   const { isOpen, onToggle } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
   const name = props.user?.name.split(' ')
@@ -149,6 +151,11 @@ const WithSubnavigation: NextPage<WithSubNavigationProps> = (props) => {
                 <br />
                 <MenuDivider />
                 {/* <MenuItem>Your Servers</MenuItem> */}
+                {profiles.includes('admin') ? (
+                  <NextLink href={'/admin'}>
+                    <MenuItem>Admin</MenuItem>
+                  </NextLink>
+                ) : null}
                 <NextLink href={'/user_config'}>
                   <MenuItem>Configurações</MenuItem>
                 </NextLink>

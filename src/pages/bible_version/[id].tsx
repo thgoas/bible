@@ -11,12 +11,8 @@ import Reflection from '../../components/Reflection'
 import VerseOfTheDay from '../../components/VerseOfTheDay'
 import client from '../../lib/apolloClient'
 
-const BibleVersion: NextPage = ({
-  dataVerse,
-  dataVersions,
-  dataReflection
-}: any) => {
-  if (dataVerse.verseOfTheDay.length === 0) {
+const BibleVersion: NextPage = ({ verseOfTheDay, versions }: any) => {
+  if (verseOfTheDay.verse.length === 0) {
     return <Error statusCode={404} />
   }
 
@@ -31,10 +27,10 @@ const BibleVersion: NextPage = ({
           />
         </Head>
         <Box mb="6">
-          <VerseOfTheDay data={dataVerse} versions={dataVersions} />
+          <VerseOfTheDay data={verseOfTheDay} versions={versions} />
         </Box>
-        {dataReflection.reflection?.text ? (
-          <Reflection reflection={dataReflection} />
+        {verseOfTheDay.reflection ? (
+          <Reflection reflection={verseOfTheDay} />
         ) : null}
       </Layout>
     </div>
@@ -42,29 +38,6 @@ const BibleVersion: NextPage = ({
 }
 
 export default BibleVersion
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const { data } = await client.query({
-//     query: gql`
-//       query Versions {
-//         versions {
-//           id
-//           name
-//           creation_date
-//         }
-//       }
-//     `
-//   })
-
-//   const paths = data.versions.map((resp) => {
-//     return { params: { id: resp.id.toString() } }
-//   })
-
-//   return {
-//     paths,
-//     fallback: false
-//   }
-// }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let version_id = 6
@@ -79,16 +52,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     query: gql`
       query verseOfTheDay($version_id: Int) {
         verseOfTheDay(filter: { version_id: $version_id }) {
-          id
-          book {
-            name
+          date_publication
+          reflection
+          author
+
+          verse {
+            id
+            book {
+              name
+            }
+            version {
+              name
+            }
+            chapter
+            verse
+            text
           }
-          version {
-            name
-          }
-          chapter
-          verse
-          text
         }
       }
     `,
@@ -110,27 +89,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     `,
     fetchPolicy: 'network-only'
   })
-  const { data: dataReflection } = await client.query({
-    query: gql`
-      query Reflection($publication: Boolean) {
-        reflection(filter: { publication: $publication }) {
-          text
-          author
-          date_publication
-        }
-      }
-    `,
-    variables: {
-      publication: true
-    },
-    fetchPolicy: 'network-only'
-  })
+
+  const { verseOfTheDay } = dataVerse
+  const { versions } = dataVersions
 
   return {
     props: {
-      dataVerse,
-      dataVersions,
-      dataReflection
+      verseOfTheDay,
+      versions
     }
   }
 }

@@ -35,21 +35,21 @@ import format from 'date-fns/format'
 import { useEffect, useMemo, useState } from 'react'
 import { useTable, useSortBy, usePagination } from 'react-table'
 import { useRouter } from 'next/router'
-import DialogDevotionalDelete from '../DialogDevotionalDelete'
+import DialogVerseOfTheDayDelete from '../DialogVerseOfTheDayDelete'
 
 interface TableProps {
   data?: any
   variant?: boolean
 }
 
-const ListTable: React.FC<TableProps> = (props) => {
+const ListTableDevotionalAdmin: React.FC<TableProps> = (props) => {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [dataDelete, setDataDelete] = useState(null)
 
   function handleView(data: any) {
-    router.push(`/devotional/view_devotional/${data.user.id}/${data.id}`)
+    router.push(`/admin/verse_of_the_day/edit_verse/${data.id}`)
   }
 
   function handleDelete(data: any) {
@@ -67,7 +67,7 @@ const ListTable: React.FC<TableProps> = (props) => {
     () => [
       {
         Header: 'data',
-        accessor: 'creation_date',
+        accessor: 'date_publication',
         // isNumeric: true,
         Cell: ({ value }) => {
           return format(new Date(value), 'dd/MM/yyyy')
@@ -85,7 +85,11 @@ const ListTable: React.FC<TableProps> = (props) => {
       },
       {
         Header: 'Versículos',
-        accessor: 'verses'
+        accessor: `end_verse`,
+        Cell: (value) => {
+          const data = value.data[value.row.id]
+          return `${data.first_verse} - ${data.end_verse}`
+        }
       },
       {
         Header: 'Ações',
@@ -149,13 +153,13 @@ const ListTable: React.FC<TableProps> = (props) => {
 
   useEffect(() => {
     if (!props.variant) {
-      setHiddenColumns(['book.name', 'verses', 'chapter'])
+      setHiddenColumns(['verses', 'chapter', 'end_verse'])
     }
   }, [setHiddenColumns, props.variant])
 
   return (
     <>
-      <DialogDevotionalDelete
+      <DialogVerseOfTheDayDelete
         data={dataDelete}
         isOpen={isOpen}
         onClose={onClose}
@@ -308,4 +312,4 @@ const ListTable: React.FC<TableProps> = (props) => {
   )
 }
 
-export default ListTable
+export default ListTableDevotionalAdmin

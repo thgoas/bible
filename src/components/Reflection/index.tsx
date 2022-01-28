@@ -10,7 +10,7 @@ interface ReflectionProps {
 }
 
 const Reflection: NextPage<ReflectionProps> = (props) => {
-  const data = props.reflection.reflection
+  const data = props.reflection
   const breakPointSize = useBreakpointValue({ base: 'xs', sm: 'sm', lg: 'md' })
   const breakPointFontSize = useBreakpointValue({
     base: 'lg',
@@ -49,7 +49,7 @@ const Reflection: NextPage<ReflectionProps> = (props) => {
         </Heading>
         <Spacer />
         <Text fontSize={breakPointFontSize} fontFamily="serif">
-          {data.text}
+          {data.reflection}
         </Text>
         <Box mb="2" mt="4" display="flex">
           <Heading fontFamily="Roboto" size={breakPointSize}>

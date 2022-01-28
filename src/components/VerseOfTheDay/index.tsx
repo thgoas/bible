@@ -48,7 +48,7 @@ const VerseOfTheDay: NextPage<VerseOfTheDayProps> = (props) => {
           fontFamily="roboto"
           size={breakPointSize}
         >
-          {props.versions?.versions.map((resp) => {
+          {props.versions?.map((resp) => {
             return (
               <option key={resp.id} value={resp.id}>
                 {resp.name}
@@ -61,7 +61,7 @@ const VerseOfTheDay: NextPage<VerseOfTheDayProps> = (props) => {
   }
 
   useEffect(() => {
-    setData(props.data.verseOfTheDay)
+    setData(props.data.verse)
     if (router.query.id) {
       setVersionId(Number(router.query.id))
     } else {

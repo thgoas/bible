@@ -202,7 +202,13 @@ const Devotional: NextPage = () => {
               </Button>
             </NextLink>
           </Flex>
-          <ListTable variant={variant} data={data?.devotional} />
+          {data?.devotional ? (
+            <Text fontFamily={'roboto'} fontSize={20} textAlign={'center'}>
+              Ops Vocês não possui Devocional...
+            </Text>
+          ) : (
+            <ListTable variant={variant} data={data?.devotional} />
+          )}
         </Box>
 
         <Box></Box>

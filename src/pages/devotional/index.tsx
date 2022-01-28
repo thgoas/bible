@@ -30,7 +30,6 @@ const Devotional: NextPage = () => {
   const [emoji, setEmoji] = useState(sad)
   const variant = useBreakpointValue({ base: false, md: true })
   const size = useBreakpointValue({ base: 'sm', md: 'md' })
-
   const handleOnClick = () => {
     if (data?.devotional[0]?.amount_day >= 3) {
       toast({
@@ -202,7 +201,7 @@ const Devotional: NextPage = () => {
               </Button>
             </NextLink>
           </Flex>
-          {data?.devotional ? (
+          {!data?.devotional ? (
             <Text fontFamily={'roboto'} fontSize={20} textAlign={'center'}>
               Ops Vocês não possui Devocional...
             </Text>

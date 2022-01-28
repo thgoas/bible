@@ -5,6 +5,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { ApolloProvider } from '@apollo/client'
 import client from '../lib/apolloClient'
 import theme from '../styles/theme'
+import Head from 'next/head'
 
 import * as gtag from '../lib/gtag'
 import Analytics from '../components/Analytics'
@@ -38,6 +39,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         {/* <Fonts /> */}
         <AuthProvider>
           <BibleProvider>
+            <Head>
+              <link rel="hora do devocional icon" href="/favicon.ico" />
+            </Head>
             <Component {...pageProps} />
           </BibleProvider>
         </AuthProvider>

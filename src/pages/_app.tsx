@@ -13,6 +13,9 @@ import Analytics from '../components/Analytics'
 import { AuthProvider } from '../contexts/AuthContext'
 import { BibleProvider } from '../contexts/BibleContext'
 
+import { DefaultSeo } from 'next-seo'
+import { SEO } from './../../next-seo-config'
+
 import '@fontsource/roboto'
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
@@ -34,20 +37,23 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   }, [router.events])
 
   return (
-    <ApolloProvider client={client}>
-      <ChakraProvider theme={theme}>
-        {/* <Fonts /> */}
-        <AuthProvider>
-          <BibleProvider>
-            <Head>
-              <link rel="hora do devocional icon" href="/favicon.ico" />
-            </Head>
-            <Component {...pageProps} />
-          </BibleProvider>
-        </AuthProvider>
-        <Analytics />
-      </ChakraProvider>
-    </ApolloProvider>
+    <>
+      <DefaultSeo {...SEO} />
+      <ApolloProvider client={client}>
+        <ChakraProvider theme={theme}>
+          {/* <Fonts /> */}
+          <AuthProvider>
+            <BibleProvider>
+              <Head>
+                <link rel="hora do devocional icon" href="/favicon.ico" />
+              </Head>
+              <Component {...pageProps} />
+            </BibleProvider>
+          </AuthProvider>
+          <Analytics />
+        </ChakraProvider>
+      </ApolloProvider>
+    </>
   )
 }
 

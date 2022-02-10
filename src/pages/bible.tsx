@@ -1,7 +1,6 @@
 import { Box, Flex, Heading } from '@chakra-ui/layout'
 import { GetServerSideProps, NextPage } from 'next'
 import { Button, Text, Spacer, useBreakpointValue } from '@chakra-ui/react'
-import Head from 'next/head'
 
 import ContentBible from '../components/ContentBible'
 import Layout from '../components/Layout'
@@ -16,6 +15,7 @@ import {
   VERSE,
   VERSIONS
 } from '../graphql/bible'
+import Page from '../components/Page'
 
 interface BibleProps {
   data: any
@@ -111,102 +111,111 @@ const Bible: NextPage<BibleProps> = (props) => {
       })
     }
   }
+  const text = []
+  for (let i = 0; i < 5; i++) {
+    text.push(props.data?.verse[i].text)
+  }
+  const description = `Bíblia Online ${
+    props.data.verse[0]?.book.name
+  } ${text.join(' ')}`
   return (
-    <Layout leftSideContent={contentBible()} leftSideTitle={'Bíblia Sagrada'}>
-      <Head>
-        <title>Biblia Online</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      <Flex
-        flexDirection="column"
-        // mb="1"
-        p="4"
-        display="flex "
-        // border="1px"
-        borderRadius="xl"
-        // borderColor="#D7D7D7"
-        // boxShadow={'xl'}
-        // bg="white"
-      >
-        <Heading fontSize="md" as="h3" fontFamily="Roboto">
-          {props.data.verse[0]?.version.name}
-        </Heading>
-        <Heading as="h1" fontFamily="Roboto" mb="4">
-          {props.data.verse[0]?.book.name} {props.data.verse[0]?.chapter}
-        </Heading>
+    <Page title="Bíblia Online" description={description}>
+      <Layout leftSideContent={contentBible()} leftSideTitle={'Bíblia Sagrada'}>
+        <Flex
+          flexDirection="column"
+          // mb="1"
+          p="4"
+          display="flex "
+          // border="1px"
+          borderRadius="xl"
+          // borderColor="#D7D7D7"
+          // boxShadow={'xl'}
+          // bg="white"
+        >
+          <Heading fontSize="md" as="h3" fontFamily="Roboto">
+            {props.data.verse[0]?.version.name}
+          </Heading>
+          <Heading as="h1" fontFamily="Roboto" mb="4">
+            {props.data.verse[0]?.book.name} {props.data.verse[0]?.chapter}
+          </Heading>
 
-        <Box>
-          {props.data.verse?.map((resp) => {
-            return (
-              <Text
-                key={resp.id}
-                fontSize={breakPointFontSize}
-                fontFamily="serif"
-                textAlign={'justify'}
-              >
-                {resp.verse}. {resp.text}
+          <Box>
+            {props.data.verse?.map((resp) => {
+              return (
+                <Text
+                  key={resp.id}
+                  fontSize={breakPointFontSize}
+                  fontFamily="serif"
+                  textAlign={'justify'}
+                >
+                  {resp.verse}. {resp.text}
+                </Text>
+              )
+            })}
+
+            <Flex mt="4" alignItems="center">
+              {!breakPointBoolean ? (
+                <Button
+                  onClick={handleButtonReturn}
+                  disabled={
+                    props.data.verse[0]?.chapter - 1 === 0 ? true : false
+                  }
+                >
+                  {'<'} {props.data.verse[0]?.book.name}{' '}
+                  {props.data.verse[0]?.chapter - 1 === 0
+                    ? null
+                    : props.data.verse[0]?.chapter - 1}
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleButtonReturn}
+                  disabled={
+                    props.data.verse[0]?.chapter - 1 === 0 ? true : false
+                  }
+                >
+                  {'<'}
+                </Button>
+              )}
+              <Spacer />
+              <Text fontFamily="Roboto" fontSize={breakPointFontSize}>
+                {props.data.verse[0]?.book.name} {props.data.verse[0]?.chapter}
               </Text>
-            )
-          })}
-
-          <Flex mt="4" alignItems="center">
-            {!breakPointBoolean ? (
-              <Button
-                onClick={handleButtonReturn}
-                disabled={props.data.verse[0]?.chapter - 1 === 0 ? true : false}
-              >
-                {'<'} {props.data.verse[0]?.book.name}{' '}
-                {props.data.verse[0]?.chapter - 1 === 0
-                  ? null
-                  : props.data.verse[0]?.chapter - 1}
-              </Button>
-            ) : (
-              <Button
-                onClick={handleButtonReturn}
-                disabled={props.data.verse[0]?.chapter - 1 === 0 ? true : false}
-              >
-                {'<'}
-              </Button>
-            )}
-            <Spacer />
-            <Text fontFamily="Roboto" fontSize={breakPointFontSize}>
-              {props.data.verse[0]?.book.name} {props.data.verse[0]?.chapter}
-            </Text>
-            <Spacer />
-            {!breakPointBoolean ? (
-              <Button
-                onClick={handleButtonNext}
-                disabled={
-                  props.data.chapterCount.length <
+              <Spacer />
+              {!breakPointBoolean ? (
+                <Button
+                  onClick={handleButtonNext}
+                  disabled={
+                    props.data.chapterCount.length <
+                    props.data.verse[0]?.chapter + 1
+                      ? true
+                      : false
+                  }
+                >
+                  {props.data.chapterCount.length <
                   props.data.verse[0]?.chapter + 1
-                    ? true
-                    : false
-                }
-              >
-                {props.data.chapterCount.length <
-                props.data.verse[0]?.chapter + 1
-                  ? props.data.verse[0]?.book.name
-                  : `${props.data.verse[0]?.book.name}  ${
-                      Number(props.data.verse[0]?.chapter) + 1
-                    } >`}
-              </Button>
-            ) : (
-              <Button
-                onClick={handleButtonNext}
-                disabled={
-                  props.data.chapterCount.length <
-                  props.data.verse[0]?.chapter + 1
-                    ? true
-                    : false
-                }
-              >
-                {'>'}
-              </Button>
-            )}
-          </Flex>
-        </Box>
-      </Flex>
-    </Layout>
+                    ? props.data.verse[0]?.book.name
+                    : `${props.data.verse[0]?.book.name}  ${
+                        Number(props.data.verse[0]?.chapter) + 1
+                      } >`}
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleButtonNext}
+                  disabled={
+                    props.data.chapterCount.length <
+                    props.data.verse[0]?.chapter + 1
+                      ? true
+                      : false
+                  }
+                >
+                  {'>'}
+                </Button>
+              )}
+            </Flex>
+          </Box>
+        </Flex>
+      </Layout>
+    </Page>
   )
 }
 

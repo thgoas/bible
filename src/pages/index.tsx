@@ -2,31 +2,33 @@ import { Box } from '@chakra-ui/layout'
 import gql from 'graphql-tag'
 
 import type { GetStaticProps, NextPage } from 'next'
-import Head from 'next/head'
 
 import Layout from '../components/Layout'
+import Page from '../components/Page'
 import Reflection from '../components/Reflection'
 import VerseOfTheDay from '../components/VerseOfTheDay'
 import client from '../lib/apolloClient'
 
 const Home: NextPage = ({ verseOfTheDay, versions }: any) => {
+  const text = verseOfTheDay.verse.map((resp) => resp.text)
+  const description = `${verseOfTheDay.verse[0].book.name} ${
+    verseOfTheDay.verse[0]?.chapter
+  }:${verseOfTheDay.verse[0]?.verse}-${
+    verseOfTheDay.verse[verseOfTheDay.verse.length - 1]?.verse
+  } ${text}`
+
   return (
     <div>
-      <Layout leftSideContent={''} leftSideTitle={''}>
-        <Head>
-          <title>Hora do Devocional</title>
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, width=device-width"
-          />
-        </Head>
-        <Box mb="6">
-          <VerseOfTheDay data={verseOfTheDay} versions={versions} />
-        </Box>
-        {verseOfTheDay.reflection ? (
-          <Reflection reflection={verseOfTheDay} />
-        ) : null}
-      </Layout>
+      <Page title="Versículo de hoje" description={description}>
+        <Layout leftSideContent={''} leftSideTitle={''}>
+          <Box mb="6">
+            <VerseOfTheDay data={verseOfTheDay} versions={versions} />
+          </Box>
+          {verseOfTheDay.reflection ? (
+            <Reflection reflection={verseOfTheDay} />
+          ) : null}
+        </Layout>
+      </Page>
     </div>
   )
 }

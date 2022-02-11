@@ -13,7 +13,7 @@ export const SEO = {
     description,
     images: [
       {
-        url: 'https://horadodevocional.com.br/hora_do_devocional.svg',
+        url: 'https://horadodevocional.com.br/logo.png',
         alt: title,
         with: 1280,
         height: 720
